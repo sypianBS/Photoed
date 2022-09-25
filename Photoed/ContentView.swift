@@ -46,16 +46,11 @@ struct ContentView: View {
     var pickPhotoView: AnyView {
         return AnyView(
             VStack {
-                ZStack {
-                    Circle()
-                        .stroke(style: StrokeStyle(lineWidth: 3, dash: [3]))
-                        .frame(width: 300, height: 300)
-                    Image(systemName: "photo.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 200)
-                }
-                
+                Image(systemName: "photo.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200)
+                    .foregroundColor(.white)
                 Text("Tap image to pick a photo")
                 
             }.onTapGesture {
@@ -65,17 +60,9 @@ struct ContentView: View {
     }
     
     var exitButtonView: AnyView {
-        return AnyView( Button {
-            print("Exit tapped")
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .frame(width: 100, height: 40)
-                    .foregroundColor(.black)
-                Text("Exit")
-                    .foregroundColor(.red)
-            }
-        })
+        return AnyView(
+            Text("by sypianBS")
+        )
     }
 }
 
