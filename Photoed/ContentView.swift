@@ -19,14 +19,21 @@ struct ContentView: View {
                 
                 exitButtonView.frame(height: geo.size.height*1/3)
                 
-            }.frame(maxWidth: .infinity) //take entire screen width
+            }
+            .frame(maxWidth: .infinity) //take entire screen width
+            .background(
+                LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
+            )
         }
     }
     
     var logoView: AnyView {
         return AnyView(
             Text("Photoed")
-                .font(.title))
+                .font(.title)
+                .bold()
+                .foregroundColor(.indigo)
+        )
     }
     
     var pickPhotoView: AnyView {
@@ -45,6 +52,7 @@ struct ContentView: View {
                 print("tapped")
             } label: {
                 Text("Tap to pick photo")
+                    .bold()
             }
         })
     }
@@ -53,8 +61,13 @@ struct ContentView: View {
         return AnyView( Button {
             print("Exit tapped")
         } label: {
-            Text("Exit")
-                .foregroundColor(.red)
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .frame(width: 100, height: 40)
+                    .foregroundColor(.black)
+                Text("Exit")
+                    .foregroundColor(.red)
+            }
         })
     }
 }
