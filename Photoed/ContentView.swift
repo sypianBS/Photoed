@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var showSheetWithPicker = false
+    @State private var pickedPhoto: UIImage?
+    
     var body: some View {
         
         //used to divide the screen into 3 equal spaces
@@ -24,6 +28,9 @@ struct ContentView: View {
             .background(
                 LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
             )
+            .sheet(isPresented: $showSheetWithPicker, onDismiss: nil) {
+                PhotoPicker(image: $pickedPhoto)
+            }
         }
     }
     
@@ -37,24 +44,24 @@ struct ContentView: View {
     }
     
     var pickPhotoView: AnyView {
-        return AnyView(VStack {
-            ZStack {
-                Circle()
-                    .stroke(style: StrokeStyle(lineWidth: 3, dash: [3]))
-                    .frame(width: 300, height: 300)
-                Image(systemName: "photo.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
+        return AnyView(
+            VStack {
+                ZStack {
+                    Circle()
+                        .stroke(style: StrokeStyle(lineWidth: 3, dash: [3]))
+                        .frame(width: 300, height: 300)
+                    Image(systemName: "photo.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200)
+                }
+                
+                Text("Tap image to pick a photo")
+                
+            }.onTapGesture {
+                showSheetWithPicker = true
             }
-            
-            Button {
-                print("tapped")
-            } label: {
-                Text("Tap to pick photo")
-                    .bold()
-            }
-        })
+        )
     }
     
     var exitButtonView: AnyView {
