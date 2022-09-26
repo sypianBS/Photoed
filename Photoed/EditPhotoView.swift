@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct EditPhotoView: View {
+    @Binding var pickedPhoto: UIImage?
+    
     var body: some View {
-        Text("todoben photo edit")
+        if let pickedPhoto = pickedPhoto {
+            EditPhotoDetailView(image: pickedPhoto)
+        } else {
+            Rectangle()
+                .fill(.gray)
+        }
     }
 }

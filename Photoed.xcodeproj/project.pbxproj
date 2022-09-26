@@ -13,6 +13,7 @@
 		C3DDB86928E0A55B00B64C27 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3DDB86828E0A55B00B64C27 /* Preview Assets.xcassets */; };
 		C3DDB87128E0BF9600B64C27 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB87028E0BF9600B64C27 /* PhotoPicker.swift */; };
 		C3DDB87328E0D53900B64C27 /* EditPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB87228E0D53900B64C27 /* EditPhotoView.swift */; };
+		C3DDB87528E22BE600B64C27 /* EditPhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB87428E22BE600B64C27 /* EditPhotoDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		C3DDB86828E0A55B00B64C27 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C3DDB87028E0BF9600B64C27 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		C3DDB87228E0D53900B64C27 /* EditPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoView.swift; sourceTree = "<group>"; };
+		C3DDB87428E22BE600B64C27 /* EditPhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				C3DDB86528E0A55B00B64C27 /* Assets.xcassets */,
 				C3DDB86728E0A55B00B64C27 /* Preview Content */,
 				C3DDB87228E0D53900B64C27 /* EditPhotoView.swift */,
+				C3DDB87428E22BE600B64C27 /* EditPhotoDetailView.swift */,
 			);
 			path = Photoed;
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 			files = (
 				C3DDB86428E0A55800B64C27 /* ContentView.swift in Sources */,
 				C3DDB87328E0D53900B64C27 /* EditPhotoView.swift in Sources */,
+				C3DDB87528E22BE600B64C27 /* EditPhotoDetailView.swift in Sources */,
 				C3DDB86228E0A55800B64C27 /* PhotoedApp.swift in Sources */,
 				C3DDB87128E0BF9600B64C27 /* PhotoPicker.swift in Sources */,
 			);
