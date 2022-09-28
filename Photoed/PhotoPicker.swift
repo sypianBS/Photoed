@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct PhotoPicker: UIViewControllerRepresentable {
     
@@ -13,32 +14,39 @@ struct PhotoPicker: UIViewControllerRepresentable {
     @Binding var image: UIImage? //chosen photo
     
     
-    func makeUIViewController(context: UIViewControllerRepresentableContext<PhotoPicker>) -> UIImagePickerController {
-        let picker = UIImagePickerController()
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var config = PHPickerConfiguration()
+        config.filter = .images
+        let picker = PHPickerViewController(configuration: config)
         picker.delegate = context.coordinator
         return picker
     }
     
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<PhotoPicker>) {
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: UIViewControllerRepresentableContext<PhotoPicker>) {
         
     }
     
     func makeCoordinator() -> PhotoPickerCoordinator {
         PhotoPickerCoordinator(self)
     }
-}
+    
+    class PhotoPickerCoordinator: NSObject, PHPickerViewControllerDelegate {
+        var parent: PhotoPicker
 
-class PhotoPickerCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    let parent: PhotoPicker
-    
-    init(_ parent: PhotoPicker) {
-        self.parent = parent
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let uiImage = info[.originalImage] as? UIImage {
-            parent.image = uiImage
+        init(_ parent: PhotoPicker) {
+            self.parent = parent
         }
-        parent.presentationMode.wrappedValue.dismiss()
+
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            picker.dismiss(animated: true)
+
+            guard let provider = results.first?.itemProvider else { return }
+
+            if provider.canLoadObject(ofClass: UIImage.self) {
+                provider.loadObject(ofClass: UIImage.self) { image, _ in
+                    self.parent.image = image as? UIImage
+                }
+            }
+        }
     }
 }
