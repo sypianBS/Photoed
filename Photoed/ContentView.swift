@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @State private var photo: UIImage?
     @State private var showSheetWithPicker = false
     @State private var pickedPhoto: UIImage?
     @State private var showEditPhotoView = false
@@ -29,10 +29,17 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity) //take entire screen width
                 .background(
                     LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
-                )
-                .sheet(isPresented: $showSheetWithPicker, onDismiss: {
-                    showEditPhotoView = true
-                }) {
+                ).onChange(of: pickedPhoto, perform: { newValue in
+                    guard let pickedPhoto = pickedPhoto else {
+                        return
+                    }
+                    photo = pickedPhoto
+                }).onChange(of: photo, perform: { photo in
+                    if photo != nil {
+                        showEditPhotoView = true
+                    }
+                })
+                .sheet(isPresented: $showSheetWithPicker) {
                     PhotoPicker(image: $pickedPhoto)
                 }
             }
