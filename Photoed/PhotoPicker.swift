@@ -9,8 +9,6 @@ import SwiftUI
 import PhotosUI
 
 struct PhotoPicker: UIViewControllerRepresentable {
-    
-    @Environment(\.presentationMode) var presentationMode //needed to dismiss after image was picked
     @Binding var image: UIImage? //chosen photo
     
     
