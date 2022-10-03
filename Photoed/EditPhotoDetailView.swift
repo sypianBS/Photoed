@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditPhotoDetailView: View {
     @State var contentMode: ContentMode = .fit
+    @State private var showFilterChoiceDialog = false
     var image: UIImage
     
     var body: some View {
@@ -29,6 +30,10 @@ struct EditPhotoDetailView: View {
                 editPhotoFooterView
                     .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
             }
+        }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
+            Button("Sepia") { print("sepia") }
+            Button("Pixellate") { print("pixellate") }
+            //cancel butotn is already provided by default
         }
     }
     
@@ -37,8 +42,9 @@ struct EditPhotoDetailView: View {
                 HStack(spacing: 32) {
                     Button("Theme", action: {})
                         .buttonStyle(EditPhotoButtonStyle())
-                    Button("Color", action: {})
-                        .buttonStyle(EditPhotoButtonStyle())
+                    Button("Filter", action: {
+                        self.showFilterChoiceDialog = true
+                    }).buttonStyle(EditPhotoButtonStyle())
                     Button("Crop", action: {})
                         .buttonStyle(EditPhotoButtonStyle())
                     Button("Save", action: {
