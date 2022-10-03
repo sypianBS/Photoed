@@ -17,42 +17,56 @@ struct EditPhotoDetailView: View {
             Color.black
                 .ignoresSafeArea()
             VStack {
-                Image(uiImage: self.editPhotoViewModel.state.inputImage!)
-                    .resizable()
-                    .aspectRatio(contentMode: self.editPhotoViewModel.state.contentMode)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipped()
-                    .onTapGesture(count: 2) {
-                        withAnimation{
-                            self.editPhotoViewModel.setContentMode(contentMode: self.editPhotoViewModel.state.contentMode == .fit ? .fill : .fit)
-                        }
-                    } //double tap will toggle between the modes
+                photoView
                 editPhotoFooterView
                     .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
             }
         }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
-            Button("Sepia") { editPhotoViewModel.setFilterType(filterType: .sepiaTone())
-                editPhotoViewModel.applyProcessing()
-            }
-            Button("Pixellate") { editPhotoViewModel.setFilterType(filterType: .pixellate()) }
-            //cancel button is already provided by default
+            dialogViewOptionsView
         }
+    }
+    
+    var photoView: AnyView {
+        return AnyView(
+            Image(uiImage: self.editPhotoViewModel.state.inputImage!)
+                .resizable()
+                .aspectRatio(contentMode: self.editPhotoViewModel.state.contentMode)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipped()
+                .onTapGesture(count: 2) {
+                    withAnimation{
+                        self.editPhotoViewModel.setContentMode(contentMode: self.editPhotoViewModel.state.contentMode == .fit ? .fill : .fit)
+                    }
+                } //double tap will toggle between the modes
+        )
     }
     
     var editPhotoFooterView: AnyView {
         return AnyView (
-                HStack(spacing: 32) {
-                    Button("Theme", action: {})
-                        .buttonStyle(EditPhotoButtonStyle())
-                    Button("Filter", action: {
-                        self.showFilterChoiceDialog = true
-                    }).buttonStyle(EditPhotoButtonStyle())
-                    Button("Crop", action: {})
-                        .buttonStyle(EditPhotoButtonStyle())
-                    Button("Save", action: {
-                        PhotoSaver().writeToPhotoAlbum(image: editPhotoViewModel.state.inputImage!)
-                    }).buttonStyle(EditPhotoButtonStyle())
+            HStack(spacing: 32) {
+                Button("Theme", action: {})
+                    .buttonStyle(EditPhotoButtonStyle())
+                Button("Filter", action: {
+                    self.showFilterChoiceDialog = true
+                }).buttonStyle(EditPhotoButtonStyle())
+                Button("Crop", action: {})
+                    .buttonStyle(EditPhotoButtonStyle())
+                Button("Save", action: {
+                    PhotoSaver().writeToPhotoAlbum(image: editPhotoViewModel.state.inputImage!)
+                }).buttonStyle(EditPhotoButtonStyle())
+            }
+        )
+    }
+    
+    var dialogViewOptionsView: AnyView {
+        return AnyView (
+            VStack {
+                Button("Sepia") { editPhotoViewModel.setFilterType(filterType: .sepiaTone())
+                    editPhotoViewModel.applyProcessing()
                 }
+                Button("Pixellate") { editPhotoViewModel.setFilterType(filterType: .pixellate()) }
+                //cancel button is already provided by default
+            }
         )
     }
 }
