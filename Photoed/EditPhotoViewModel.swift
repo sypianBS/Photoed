@@ -27,6 +27,10 @@ class EditPhotoViewModel: ObservableObject {
         var filterIntensity = 1.0
     }
     
+    func restoreState() {
+        self.state = EditPhotoState(currentFilter: CIFilter.sepiaTone())
+    }
+    
     func setInputPhoto(photo: UIImage) {
         self.state.inputImage = photo
     }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct EditPhotoDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     @EnvironmentObject var editPhotoViewModel: EditPhotoViewModel
     @State private var showFilterChoiceDialog = false
     @State private var processedImage: UIImage?
@@ -24,6 +26,8 @@ struct EditPhotoDetailView: View {
                 }
             }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
                 dialogViewOptionsView
+            }.onDisappear {
+                self.editPhotoViewModel.restoreState()
             }
         } else {
             Rectangle()
@@ -49,6 +53,9 @@ struct EditPhotoDetailView: View {
     var editPhotoFooterView: AnyView {
         return AnyView (
             HStack(spacing: 32) {
+                Button("Dismiss") {
+                    self.presentationMode.wrappedValue.dismiss() //todoben move this button somewhere else
+                }
                 Button("Theme", action: {})
                     .buttonStyle(EditPhotoButtonStyle())
                 Button("Filter", action: {
