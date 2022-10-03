@@ -12,7 +12,6 @@ struct EditPhotoDetailView: View {
     
     @EnvironmentObject var editPhotoViewModel: EditPhotoViewModel
     @State private var showFilterChoiceDialog = false
-    @State private var processedImage: UIImage?
     
     var body: some View {
         if editPhotoViewModel.state.inputImage != nil {
@@ -24,11 +23,14 @@ struct EditPhotoDetailView: View {
                     editPhotoFooterView
                         .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
                 }
-            }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
-                dialogViewOptionsView
-            }.onDisappear {
-                self.editPhotoViewModel.restoreState()
-            }
+            }.onChange(of: editPhotoViewModel.state.processedImage, perform: { _ in
+                print("changed")
+            })
+                .confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
+                    dialogViewOptionsView
+                }.onDisappear {
+                    self.editPhotoViewModel.restoreState()
+                }
         } else {
             Rectangle()
                 .fill(.gray)
@@ -64,7 +66,9 @@ struct EditPhotoDetailView: View {
                 Button("Crop", action: {})
                     .buttonStyle(EditPhotoButtonStyle())
                 Button("Save", action: {
-                    PhotoSaver().writeToPhotoAlbum(image: editPhotoViewModel.state.inputImage!)
+                    if let processedImage = editPhotoViewModel.state.processedImage {
+                        PhotoSaver().writeToPhotoAlbum(image: processedImage)
+                    }
                 }).buttonStyle(EditPhotoButtonStyle())
             }
         )
@@ -73,10 +77,13 @@ struct EditPhotoDetailView: View {
     var dialogViewOptionsView: AnyView {
         return AnyView (
             VStack {
-                Button("Sepia") { editPhotoViewModel.setFilterType(filterType: .sepiaTone())
+                Button("Sepia") {
+                    editPhotoViewModel.setFilterType(filterType: .sepiaTone())
                     editPhotoViewModel.applyProcessing()
                 }
-                Button("Pixellate") { editPhotoViewModel.setFilterType(filterType: .pixellate()) }
+                Button("Pixellate") { editPhotoViewModel.setFilterType(filterType: .pixellate())
+                    editPhotoViewModel.applyProcessing()
+                }
                 //cancel button is already provided by default
             }
         )

@@ -42,8 +42,13 @@ class EditPhotoViewModel: ObservableObject {
     func setFilterType(filterType: CIFilter) {
         self.state.currentFilter = filterType
     }
-    
+
     func applyProcessing() {
+        guard let inputImage = self.state.inputImage else { return }
+
+        let beginImage = CIImage(image: inputImage)
+        self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+        
         let inputKeys = self.state.currentFilter.inputKeys
 
         if inputKeys.contains(kCIInputIntensityKey) { self.state.currentFilter.setValue(self.state.filterIntensity, forKey: kCIInputIntensityKey) }
