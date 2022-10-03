@@ -45,7 +45,7 @@ struct ContentView: View {
     
     var editPhotoViewNavigationLink: AnyView {
         return AnyView(
-            NavigationLink(destination: EditPhotoView()
+            NavigationLink(destination: EditPhotoDetailView()
                             .navigationBarHidden(true), isActive: self.$showEditPhotoView) {
                 EmptyView()
             }.hidden()

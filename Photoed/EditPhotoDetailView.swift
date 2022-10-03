@@ -13,16 +13,21 @@ struct EditPhotoDetailView: View {
     @State private var processedImage: UIImage?
     
     var body: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea()
-            VStack {
-                photoView
-                editPhotoFooterView
-                    .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
+        if editPhotoViewModel.state.inputImage != nil {
+            ZStack {
+                Color.black
+                    .ignoresSafeArea()
+                VStack {
+                    photoView
+                    editPhotoFooterView
+                        .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
+                }
+            }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
+                dialogViewOptionsView
             }
-        }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
-            dialogViewOptionsView
+        } else {
+            Rectangle()
+                .fill(.gray)
         }
     }
     
