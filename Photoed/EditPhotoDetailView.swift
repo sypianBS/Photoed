@@ -30,11 +30,33 @@ struct EditPhotoDetailView: View {
                     dialogViewOptionsView
                 }.onDisappear {
                     self.editPhotoViewModel.restoreState()
-                }
+                }.navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: closeBarButtonView, trailing: saveBarButtonView)
         } else {
             Rectangle()
                 .fill(.gray)
         }
+    }
+ 
+    var closeBarButtonView: AnyView {
+        return AnyView(
+            Button(action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image(systemName: "xmark")
+                    .foregroundColor(.white)
+            }).buttonStyle(EditPhotoButtonStyle())
+        )
+    }
+    
+    var saveBarButtonView: AnyView {
+        return AnyView(
+            Button("Save") {
+                if let processedImage = editPhotoViewModel.state.processedImage {
+                    PhotoSaver().writeToPhotoAlbum(image: processedImage)
+                }
+            }.buttonStyle(EditPhotoButtonStyle())
+        )
     }
     
     var photoView: AnyView {
@@ -55,9 +77,6 @@ struct EditPhotoDetailView: View {
     var editPhotoFooterView: AnyView {
         return AnyView (
             HStack(spacing: 32) {
-                Button("Dismiss") {
-                    self.presentationMode.wrappedValue.dismiss() //todoben move this button somewhere else
-                }
                 Button("Theme", action: {})
                     .buttonStyle(EditPhotoButtonStyle())
                 Button("Filter", action: {
@@ -65,11 +84,6 @@ struct EditPhotoDetailView: View {
                 }).buttonStyle(EditPhotoButtonStyle())
                 Button("Crop", action: {})
                     .buttonStyle(EditPhotoButtonStyle())
-                Button("Save", action: {
-                    if let processedImage = editPhotoViewModel.state.processedImage {
-                        PhotoSaver().writeToPhotoAlbum(image: processedImage)
-                    }
-                }).buttonStyle(EditPhotoButtonStyle())
             }
         )
     }
