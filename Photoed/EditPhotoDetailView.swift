@@ -23,8 +23,8 @@ struct EditPhotoDetailView: View {
                     editPhotoFooterView
                         .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
                 }
-            }.onChange(of: editPhotoViewModel.state.processedImage, perform: { _ in
-                print("changed")
+            }.onChange(of: editPhotoViewModel.state.processedImage, perform: { processedImage in
+                self.editPhotoViewModel.state.inputImage = processedImage //todoben probably just a temporary solution to show updates in the UI
             })
                 .confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
                     dialogViewOptionsView
