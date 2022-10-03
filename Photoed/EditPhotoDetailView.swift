@@ -49,13 +49,21 @@ struct EditPhotoDetailView: View {
         )
     }
     
+    var isSaveButtonEnabled: Bool {
+        return editPhotoViewModel.state.processedImage != nil
+    }
+    
     var saveBarButtonView: AnyView {
         return AnyView(
-            Button("Save") {
+            Button(action: {
                 if let processedImage = editPhotoViewModel.state.processedImage {
                     PhotoSaver().writeToPhotoAlbum(image: processedImage)
+                    self.presentationMode.wrappedValue.dismiss()
                 }
-            }.buttonStyle(EditPhotoButtonStyle())
+            }, label: {
+                Text("Save")
+                    .foregroundColor(isSaveButtonEnabled ? .white : .gray)
+            }).disabled(!isSaveButtonEnabled)
         )
     }
     
