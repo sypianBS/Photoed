@@ -26,9 +26,35 @@ struct EditPhotoDetailView: View {
                             self.contentMode = self.contentMode == .fit ? .fill : .fit
                         }
                     } //double tap will toggle between the modes
-                EditPhotoFooterView()
+                editPhotoFooterView
                     .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
             }
         }
     }
+    
+    var editPhotoFooterView: AnyView {
+        return AnyView (
+                HStack(spacing: 32) {
+                    Button("Theme", action: {})
+                        .buttonStyle(EditPhotoButtonStyle())
+                    Button("Color", action: {})
+                        .buttonStyle(EditPhotoButtonStyle())
+                    Button("Crop", action: {})
+                        .buttonStyle(EditPhotoButtonStyle())
+                    Button("Save", action: {
+                        PhotoSaver().writeToPhotoAlbum(image: image)
+                    }).buttonStyle(EditPhotoButtonStyle())
+                }
+        )
+    }
 }
+
+struct EditPhotoButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(Font.system(size: 16).bold())
+            .foregroundColor(.white)
+            .opacity(configuration.isPressed ? 0.1 : 1.0)
+    }
+}
+
