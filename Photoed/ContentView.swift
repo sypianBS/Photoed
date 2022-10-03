@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var photo: UIImage?
+    @StateObject private var editPhotoViewModel = EditPhotoViewModel()
     @State private var showSheetWithPicker = false
-    @State private var pickedPhoto: UIImage?
     @State private var showEditPhotoView = false
     
     var body: some View {
@@ -29,26 +28,24 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity) //take entire screen width
                 .background(
                     LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
-                ).onChange(of: pickedPhoto, perform: { newValue in
-                    guard let pickedPhoto = pickedPhoto else {
+                ).onChange(of: editPhotoViewModel.state.inputImage, perform: { newValue in
+                    guard let pickedPhoto = editPhotoViewModel.state.inputImage else {
+                        showEditPhotoView = false
                         return
                     }
-                    photo = pickedPhoto
-                }).onChange(of: photo, perform: { photo in
-                    if photo != nil {
-                        showEditPhotoView = true
-                    }
+                    showEditPhotoView = true
+                    self.editPhotoViewModel.setInputPhoto(photo: pickedPhoto)
                 })
                 .sheet(isPresented: $showSheetWithPicker) {
-                    PhotoPicker(image: $pickedPhoto)
+                    PhotoPicker(image: $editPhotoViewModel.state.inputImage)
                 }
             }
-        }
+        }.environmentObject(editPhotoViewModel)
     }
     
     var editPhotoViewNavigationLink: AnyView {
         return AnyView(
-            NavigationLink(destination: EditPhotoView(pickedPhoto: $pickedPhoto)
+            NavigationLink(destination: EditPhotoView()
                             .navigationBarHidden(true), isActive: self.$showEditPhotoView) {
                 EmptyView()
             }.hidden()

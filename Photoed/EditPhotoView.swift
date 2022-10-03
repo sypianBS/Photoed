@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct EditPhotoView: View {
-    @Binding var pickedPhoto: UIImage?
+    @EnvironmentObject var editPhotoViewModel: EditPhotoViewModel
     
     var body: some View {
-        if let pickedPhoto = pickedPhoto {
-            EditPhotoDetailView(image: pickedPhoto)
+        if editPhotoViewModel.state.inputImage != nil {
+            EditPhotoDetailView()
         } else {
             Rectangle()
                 .fill(.gray)

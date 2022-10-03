@@ -8,32 +8,34 @@
 import SwiftUI
 
 struct EditPhotoDetailView: View {
-    @State var contentMode: ContentMode = .fit
+    @EnvironmentObject var editPhotoViewModel: EditPhotoViewModel
     @State private var showFilterChoiceDialog = false
-    var image: UIImage
+    @State private var processedImage: UIImage?
     
     var body: some View {
         ZStack {
             Color.black
                 .ignoresSafeArea()
             VStack {
-                Image(uiImage: image)
+                Image(uiImage: self.editPhotoViewModel.state.inputImage!)
                     .resizable()
-                    .aspectRatio(contentMode: self.contentMode)
+                    .aspectRatio(contentMode: self.editPhotoViewModel.state.contentMode)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .clipped()
                     .onTapGesture(count: 2) {
                         withAnimation{
-                            self.contentMode = self.contentMode == .fit ? .fill : .fit
+                            self.editPhotoViewModel.setContentMode(contentMode: self.editPhotoViewModel.state.contentMode == .fit ? .fill : .fit)
                         }
                     } //double tap will toggle between the modes
                 editPhotoFooterView
                     .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
             }
         }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
-            Button("Sepia") { print("sepia") }
-            Button("Pixellate") { print("pixellate") }
-            //cancel butotn is already provided by default
+            Button("Sepia") { editPhotoViewModel.setFilterType(filterType: .sepiaTone())
+                editPhotoViewModel.applyProcessing()
+            }
+            Button("Pixellate") { editPhotoViewModel.setFilterType(filterType: .pixellate()) }
+            //cancel button is already provided by default
         }
     }
     
@@ -48,7 +50,7 @@ struct EditPhotoDetailView: View {
                     Button("Crop", action: {})
                         .buttonStyle(EditPhotoButtonStyle())
                     Button("Save", action: {
-                        PhotoSaver().writeToPhotoAlbum(image: image)
+                        PhotoSaver().writeToPhotoAlbum(image: editPhotoViewModel.state.inputImage!)
                     }).buttonStyle(EditPhotoButtonStyle())
                 }
         )
