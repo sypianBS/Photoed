@@ -19,9 +19,9 @@ struct ContentView: View {
                 VStack {
                     logoView.frame(height: geo.size.height*1/3)
                     
-                    pickPhotoView.frame(height: geo.size.height*1/3)
+                    PickPhotoView(showSheetWithPicker: $showSheetWithPicker).frame(height: geo.size.height*1/3)
                     
-                    exitButtonView.frame(height: geo.size.height*1/3)
+                    bottomTextView.frame(height: geo.size.height*1/3)
                     
                     editPhotoViewNavigationLink
                 }
@@ -60,23 +60,38 @@ struct ContentView: View {
         )
     }
     
-    var pickPhotoView: AnyView {
-        return AnyView(
+    struct PickPhotoView: View {
+        @Binding var showSheetWithPicker: Bool
+        @State var isAnimated = false
+        var body: some View {
             VStack {
-                Image(systemName: "photo.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-                    .foregroundColor(.white)
-                Text("Tap image to pick a photo")
-                
-            }.onTapGesture {
+                ZStack {
+                    Image(systemName: "photo.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200)
+                        .foregroundColor(.white)
+                    Image(systemName: "hand.tap.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 64)
+                        .foregroundColor(.yellow)
+                        .offset(x: 0, y: isAnimated ? 140 : 50)
+                }
+            }.onAppear {
+                DispatchQueue.main.async { //required to fix the weird behavior of animating the entire layout, see https://stackoverflow.com/questions/64566492/swiftui-broken-explicit-animations-in-navigationview
+                    withAnimation(Animation.easeInOut(duration: 1.5).repeatForever()) {
+                        isAnimated.toggle()
+                    }
+                }
+            }
+            .onTapGesture {
                 showSheetWithPicker = true
             }
-        )
+        }
     }
     
-    var exitButtonView: AnyView {
+    var bottomTextView: AnyView {
         return AnyView(
             Text("by sypianBS")
         )
