@@ -62,15 +62,22 @@ struct ContentView: View {
     
     struct PickPhotoView: View {
         @Binding var showSheetWithPicker: Bool
-        @State var isAnimated = false
+        @State private var isAnimated = false
+        @State private var dashPhase = 0.0
+                
         var body: some View {
             VStack {
                 ZStack {
-                    Image(systemName: "photo.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 200)
-                        .foregroundColor(.white)
+                    ZStack {
+                        Image(systemName: "photo.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200)
+                            .foregroundColor(.white)
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [10], dashPhase: dashPhase))
+                            .frame(width: 200, height: 155) //todoben probably need a child size reader for the ideal height
+                    }
                     Image(systemName: "hand.tap.fill")
                         .resizable()
                         .scaledToFit()
@@ -82,6 +89,9 @@ struct ContentView: View {
                 DispatchQueue.main.async { //required to fix the weird behavior of animating the entire layout, see https://stackoverflow.com/questions/64566492/swiftui-broken-explicit-animations-in-navigationview
                     withAnimation(Animation.easeInOut(duration: 1.5).repeatForever()) {
                         isAnimated.toggle()
+                    }
+                    withAnimation(.linear.repeatForever(autoreverses: false)) {
+                        dashPhase -= 20
                     }
                 }
             }
