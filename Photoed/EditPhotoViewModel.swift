@@ -20,7 +20,7 @@ class EditPhotoViewModel: ObservableObject {
     }
     
     struct EditPhotoState {
-        var inputImage: UIImage?
+        var inputImage: UIImage = UIImage(systemName: "pencil")!
         var processedImage: UIImage?
         var contentMode: ContentMode = .fit
         var currentFilter: CIFilter
@@ -44,9 +44,9 @@ class EditPhotoViewModel: ObservableObject {
     }
 
     func applyProcessing() {
-        guard let inputImage = self.state.inputImage else { return }
+//        guard let inputImage = self.state.inputImage else { return }
 
-        let beginImage = CIImage(image: inputImage)
+        let beginImage = CIImage(image: self.state.inputImage)
         self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         
         let inputKeys = self.state.currentFilter.inputKeys

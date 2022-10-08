@@ -29,12 +29,12 @@ struct ContentView: View {
                 .background(
                     LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
                 ).onChange(of: editPhotoViewModel.state.inputImage, perform: { newValue in
-                    guard let pickedPhoto = editPhotoViewModel.state.inputImage else {
-                        showEditPhotoView = false
-                        return
-                    }
+//                    guard let pickedPhoto = editPhotoViewModel.state.inputImage else {
+//                        showEditPhotoView = false
+//                        return
+//                    }
                     showEditPhotoView = true
-                    self.editPhotoViewModel.setInputPhoto(photo: pickedPhoto)
+                    self.editPhotoViewModel.setInputPhoto(photo: editPhotoViewModel.state.inputImage)
                 })
                 .sheet(isPresented: $showSheetWithPicker) {
                     PhotoPicker(image: $editPhotoViewModel.state.inputImage)

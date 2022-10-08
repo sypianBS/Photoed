@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C3135F4C28F1CB1C004358C9 /* Mantis in Frameworks */ = {isa = PBXBuildFile; productRef = C3135F4B28F1CB1C004358C9 /* Mantis */; };
+		C3135F4E28F1CC2D004358C9 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3135F4D28F1CC2D004358C9 /* ImageCropper.swift */; };
 		C3CCCFBA28EACD7100561D92 /* PhotoSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CCCFB928EACD7100561D92 /* PhotoSaver.swift */; };
 		C3CCCFBC28EAD9B300561D92 /* EditPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CCCFBB28EAD9B300561D92 /* EditPhotoViewModel.swift */; };
 		C3DDB86228E0A55800B64C27 /* PhotoedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB86128E0A55800B64C27 /* PhotoedApp.swift */; };
@@ -18,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C3135F4D28F1CC2D004358C9 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		C3CCCFB928EACD7100561D92 /* PhotoSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSaver.swift; sourceTree = "<group>"; };
 		C3CCCFBB28EAD9B300561D92 /* EditPhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoViewModel.swift; sourceTree = "<group>"; };
 		C3DDB85E28E0A55800B64C27 /* Photoed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photoed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -34,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3135F4C28F1CB1C004358C9 /* Mantis in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +71,7 @@
 				C3DDB87428E22BE600B64C27 /* EditPhotoDetailView.swift */,
 				C3CCCFB928EACD7100561D92 /* PhotoSaver.swift */,
 				C3CCCFBB28EAD9B300561D92 /* EditPhotoViewModel.swift */,
+				C3135F4D28F1CC2D004358C9 /* ImageCropper.swift */,
 			);
 			path = Photoed;
 			sourceTree = "<group>";
@@ -95,6 +100,9 @@
 			dependencies = (
 			);
 			name = Photoed;
+			packageProductDependencies = (
+				C3135F4B28F1CB1C004358C9 /* Mantis */,
+			);
 			productName = Photoed;
 			productReference = C3DDB85E28E0A55800B64C27 /* Photoed.app */;
 			productType = "com.apple.product-type.application";
@@ -123,6 +131,9 @@
 				Base,
 			);
 			mainGroup = C3DDB85528E0A55800B64C27;
+			packageReferences = (
+				C3135F4A28F1CB1C004358C9 /* XCRemoteSwiftPackageReference "Mantis" */,
+			);
 			productRefGroup = C3DDB85F28E0A55800B64C27 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -154,6 +165,7 @@
 				C3CCCFBA28EACD7100561D92 /* PhotoSaver.swift in Sources */,
 				C3DDB87528E22BE600B64C27 /* EditPhotoDetailView.swift in Sources */,
 				C3DDB86228E0A55800B64C27 /* PhotoedApp.swift in Sources */,
+				C3135F4E28F1CC2D004358C9 /* ImageCropper.swift in Sources */,
 				C3DDB87128E0BF9600B64C27 /* PhotoPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,6 +371,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C3135F4A28F1CB1C004358C9 /* XCRemoteSwiftPackageReference "Mantis" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/guoyingtao/Mantis.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C3135F4B28F1CB1C004358C9 /* Mantis */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C3135F4A28F1CB1C004358C9 /* XCRemoteSwiftPackageReference "Mantis" */;
+			productName = Mantis;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C3DDB85628E0A55800B64C27 /* Project object */;
 }

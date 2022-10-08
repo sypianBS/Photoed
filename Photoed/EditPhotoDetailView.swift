@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import Mantis
 
 struct EditPhotoDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject var editPhotoViewModel: EditPhotoViewModel
     @State private var showFilterChoiceDialog = false
+    @State private var showImageCropper = false
+    @State private var cropShapeType: Mantis.CropShapeType = .rect
+    @State private var presetFixedRatioType: Mantis.PresetFixedRatioType = .canUseMultiplePresetFixedRatio()
     
     var body: some View {
         if editPhotoViewModel.state.inputImage != nil {
@@ -24,7 +28,7 @@ struct EditPhotoDetailView: View {
                         .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
                 }
             }.onChange(of: editPhotoViewModel.state.processedImage, perform: { processedImage in
-                self.editPhotoViewModel.state.inputImage = processedImage //todoben probably just a temporary solution to show updates in the UI
+                self.editPhotoViewModel.state.inputImage = processedImage! //todoben probably just a temporary solution to show updates in the UI
             })
                 .confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
                     dialogViewOptionsView
@@ -32,6 +36,10 @@ struct EditPhotoDetailView: View {
                     self.editPhotoViewModel.restoreState()
                 }.navigationBarBackButtonHidden(true)
                 .navigationBarItems(leading: closeBarButtonView, trailing: saveBarButtonView)
+                .fullScreenCover(isPresented: $showImageCropper) {
+//                    guard
+                    ImageCropper(image: $editPhotoViewModel.state.inputImage, cropShapeType: $cropShapeType, presetFixedRatioType: $presetFixedRatioType)
+                }
         } else {
             Rectangle()
                 .fill(.gray)
@@ -69,7 +77,7 @@ struct EditPhotoDetailView: View {
     
     var photoView: AnyView {
         return AnyView(
-            Image(uiImage: self.editPhotoViewModel.state.inputImage!)
+            Image(uiImage: self.editPhotoViewModel.state.inputImage)
                 .resizable()
                 .aspectRatio(contentMode: self.editPhotoViewModel.state.contentMode)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -90,7 +98,9 @@ struct EditPhotoDetailView: View {
                 Button("Filter", action: {
                     self.showFilterChoiceDialog = true
                 }).buttonStyle(EditPhotoButtonStyle())
-                Button("Crop", action: {})
+                Button("Crop", action: {
+                    showImageCropper.toggle()
+                })
                     .buttonStyle(EditPhotoButtonStyle())
             }
         )
