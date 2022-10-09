@@ -65,8 +65,8 @@ struct EditPhotoDetailView: View {
         )
     }
     
-    var isSaveButtonEnabled: Bool {
-        return editPhotoViewModel.state.processedImage != nil
+    var isSaveButtonEnabled: Bool { //enable saving only if the image has changed
+        return editPhotoViewModel.state.inputImage != editPhotoViewModel.state.processedImage
     }
     
     var saveBarButtonView: AnyView {
