@@ -10,7 +10,7 @@ import Mantis
 
 //based on https://github.com/guoyingtao/Mantis/blob/master/SwiftUIExample/MantisSwiftUIExample/ContentView.swift
 struct ImageCropper: UIViewControllerRepresentable {
-    @Binding var image: UIImage
+    @Binding var image: UIImage?
     @Binding var cropShapeType: Mantis.CropShapeType
     @Binding var presetFixedRatioType: Mantis.PresetFixedRatioType
     
@@ -51,7 +51,7 @@ struct ImageCropper: UIViewControllerRepresentable {
         var config = Mantis.Config()
         config.cropViewConfig.cropShapeType = cropShapeType
         config.presetFixedRatioType = presetFixedRatioType
-        let cropViewController = Mantis.cropViewController(image: image,
+        let cropViewController = Mantis.cropViewController(image: image!,
                                                            config: config)
         cropViewController.delegate = context.coordinator
         return cropViewController

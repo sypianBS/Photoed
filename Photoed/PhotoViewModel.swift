@@ -1,5 +1,5 @@
 //
-//  EditPhotoViewModel.swift
+//  PhotoViewModel.swift
 //  Photoed
 //
 //  Created by Beniamin on 03.10.22.
@@ -9,30 +9,33 @@ import Foundation
 import SwiftUI
 import CoreImage.CIFilterBuiltins
 
-class EditPhotoViewModel: ObservableObject {
+class PhotoViewModel: ObservableObject {
     
-    @Published var state: EditPhotoState
+    @Published var state: PhotoState
+    
+    static let shared = PhotoViewModel()
     
     let context = CIContext()
     
-    init() {
-        state = EditPhotoState(currentFilter: CIFilter.sepiaTone())
+    private init() {
+        state = PhotoState(currentFilter: CIFilter.sepiaTone())
     }
     
-    struct EditPhotoState {
-        var inputImage: UIImage = UIImage(systemName: "pencil")!
-        var processedImage: UIImage?
+    struct PhotoState {
+        var inputImage: UIImage!
+        var processedImage: UIImage!
         var contentMode: ContentMode = .fit
         var currentFilter: CIFilter
         var filterIntensity = 1.0
     }
     
-    func restoreState() {
-        self.state = EditPhotoState(currentFilter: CIFilter.sepiaTone())
+    func restoreImageChanges() {
+        self.state.processedImage = self.state.inputImage
     }
     
     func setInputPhoto(photo: UIImage) {
         self.state.inputImage = photo
+        self.state.processedImage = photo //initial value equal to the input image
     }
     
     func setContentMode(contentMode: ContentMode) {
@@ -44,8 +47,6 @@ class EditPhotoViewModel: ObservableObject {
     }
 
     func applyProcessing() {
-//        guard let inputImage = self.state.inputImage else { return }
-
         let beginImage = CIImage(image: self.state.inputImage)
         self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         
@@ -59,7 +60,6 @@ class EditPhotoViewModel: ObservableObject {
 
         if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
             let uiImage = UIImage(cgImage: cgimg)
-//            self.state.image = Image(uiImage: uiImage)
             self.state.processedImage = uiImage
         }
     }

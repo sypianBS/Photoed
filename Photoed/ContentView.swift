@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var editPhotoViewModel = EditPhotoViewModel()
     @State private var showSheetWithPicker = false
     @State private var showEditPhotoView = false
+    @State private var pickedImage: UIImage?
+    @EnvironmentObject var editPhotoViewModel: PhotoViewModel
     
     var body: some View {
         NavigationView {
@@ -28,19 +29,20 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity) //take entire screen width
                 .background(
                     LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
-                ).onChange(of: editPhotoViewModel.state.inputImage, perform: { newValue in
-//                    guard let pickedPhoto = editPhotoViewModel.state.inputImage else {
-//                        showEditPhotoView = false
-//                        return
-//                    }
+                ).onChange(of: pickedImage, perform: { newValue in
+                    guard let pickedPhoto = pickedImage else {
+                        showEditPhotoView = false
+                        return
+                    }
+                    
+                    editPhotoViewModel.setInputPhoto(photo: pickedPhoto)
                     showEditPhotoView = true
-                    self.editPhotoViewModel.setInputPhoto(photo: editPhotoViewModel.state.inputImage)
                 })
                 .sheet(isPresented: $showSheetWithPicker) {
-                    PhotoPicker(image: $editPhotoViewModel.state.inputImage)
+                    PhotoPicker(image: $pickedImage)
                 }
             }
-        }.environmentObject(editPhotoViewModel)
+        }
     }
     
     var editPhotoViewNavigationLink: AnyView {

@@ -10,48 +10,56 @@ import Mantis
 
 struct EditPhotoDetailView: View {
     @Environment(\.presentationMode) var presentationMode
-    
-    @EnvironmentObject var editPhotoViewModel: EditPhotoViewModel
+    @EnvironmentObject var editPhotoViewModel: PhotoViewModel
     @State private var showFilterChoiceDialog = false
     @State private var showImageCropper = false
     @State private var cropShapeType: Mantis.CropShapeType = .rect
     @State private var presetFixedRatioType: Mantis.PresetFixedRatioType = .canUseMultiplePresetFixedRatio()
+    @State private var processedImage: UIImage?
     
     var body: some View {
-        if editPhotoViewModel.state.inputImage != nil {
-            ZStack {
-                Color.black
-                    .ignoresSafeArea()
-                VStack {
-                    photoView
-                    editPhotoFooterView
-                        .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
+        ZStack {
+            Color.black
+                .ignoresSafeArea()
+            VStack {
+                photoView
+                editPhotoFooterView
+                    .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
+            }
+        }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
+            dialogViewOptionsView
+        }.navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    closeBarButtonView
+                    
+                    undoChangesButtonView
                 }
-            }.onChange(of: editPhotoViewModel.state.processedImage, perform: { processedImage in
-                self.editPhotoViewModel.state.inputImage = processedImage! //todoben probably just a temporary solution to show updates in the UI
-            })
-                .confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
-                    dialogViewOptionsView
-                }.onDisappear {
-                    self.editPhotoViewModel.restoreState()
-                }.navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: closeBarButtonView, trailing: saveBarButtonView)
-                .fullScreenCover(isPresented: $showImageCropper) {
-//                    guard
-                    ImageCropper(image: $editPhotoViewModel.state.inputImage, cropShapeType: $cropShapeType, presetFixedRatioType: $presetFixedRatioType)
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    saveBarButtonView
                 }
-        } else {
-            Rectangle()
-                .fill(.gray)
-        }
+            }.fullScreenCover(isPresented: $showImageCropper) {
+                ImageCropper(image: $editPhotoViewModel.state.processedImage, cropShapeType: $cropShapeType, presetFixedRatioType: $presetFixedRatioType)
+            }
     }
- 
+    
     var closeBarButtonView: AnyView {
         return AnyView(
             Button(action: {
                 self.presentationMode.wrappedValue.dismiss()
             }, label: {
                 Image(systemName: "xmark")
+                    .foregroundColor(.white)
+            }).buttonStyle(EditPhotoButtonStyle())
+        )
+    }
+    
+    var undoChangesButtonView: AnyView {
+        return AnyView(
+            Button(action: {
+                self.editPhotoViewModel.restoreImageChanges()
+            }, label: {
+                Image(systemName: "arrow.uturn.backward")
                     .foregroundColor(.white)
             }).buttonStyle(EditPhotoButtonStyle())
         )
@@ -77,7 +85,7 @@ struct EditPhotoDetailView: View {
     
     var photoView: AnyView {
         return AnyView(
-            Image(uiImage: self.editPhotoViewModel.state.inputImage)
+            Image(uiImage: self.editPhotoViewModel.state.processedImage)
                 .resizable()
                 .aspectRatio(contentMode: self.editPhotoViewModel.state.contentMode)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
