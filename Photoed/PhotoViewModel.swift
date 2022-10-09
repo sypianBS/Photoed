@@ -47,7 +47,7 @@ class PhotoViewModel: ObservableObject {
     }
 
     func applyProcessing() {
-        let beginImage = CIImage(image: self.state.inputImage)
+        let beginImage = CIImage(image: self.state.processedImage)
         self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         
         let inputKeys = self.state.currentFilter.inputKeys
