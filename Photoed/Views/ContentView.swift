@@ -57,7 +57,7 @@ struct ContentView: View {
     var logoView: AnyView {
         return AnyView(
             Text("Photoed")
-                .font(.title)
+                .font(.largeTitle)
                 .bold()
                 .foregroundColor(.indigo)
         )
@@ -79,7 +79,7 @@ struct ContentView: View {
                             .foregroundColor(.white)
                         RoundedRectangle(cornerRadius: 12)
                             .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [10], dashPhase: dashPhase))
-                            .frame(width: 200, height: 155) //todoben probably need a child size reader for the ideal height
+                            .frame(width: 215, height: 170)
                     }
                     Image(systemName: "hand.tap.fill")
                         .resizable()
