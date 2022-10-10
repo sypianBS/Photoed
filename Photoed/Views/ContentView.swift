@@ -26,6 +26,7 @@ struct ContentView: View {
                     
                     editPhotoViewNavigationLink
                 }
+                .navigationBarHidden(true)
                 .frame(maxWidth: .infinity) //take entire screen width
                 .background(
                     LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
