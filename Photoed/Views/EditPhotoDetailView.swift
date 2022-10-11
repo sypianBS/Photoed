@@ -31,7 +31,7 @@ struct EditPhotoDetailView: View {
         }.navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                    closeBarButtonView
+                    closeBarButtonView.padding(.trailing, 16)
                     
                     undoChangesButtonView
                 }
