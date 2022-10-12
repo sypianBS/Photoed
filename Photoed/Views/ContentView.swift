@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showSheetWithPicker = false
+    @State private var showCameraPicker = false
     @State private var showEditPhotoView = false
     @State private var pickedImage: UIImage?
+    @State private var showSourceChoiceDialog = false
     @EnvironmentObject var editPhotoViewModel: PhotoViewModel
     
     var body: some View {
@@ -20,17 +22,37 @@ struct ContentView: View {
                 VStack {
                     logoView.frame(height: geo.size.height*1/3)
                     
-                    PickPhotoView(showSheetWithPicker: $showSheetWithPicker).frame(height: geo.size.height*1/3)
+                    PickPhotoView()
+                        .frame(height: geo.size.height*1/3)
+                        .onTapGesture {
+                            showSourceChoiceDialog = true
+                        }
                     
                     bottomTextView.frame(height: geo.size.height*1/3)
                     
                     editPhotoViewNavigationLink
+                }
+                .confirmationDialog("Choose source", isPresented: $showSourceChoiceDialog) {
+                    VStack {
+                        Button {
+                            showSheetWithPicker = true
+                        } label: {
+                            Text("Library")
+                        }
+                        
+                        Button {
+                            showCameraPicker = true
+                        } label: {
+                            Text("Camera")
+                        }
+                    }
                 }
                 .navigationBarHidden(true)
                 .frame(maxWidth: .infinity) //take entire screen width
                 .background(
                     LinearGradient(gradient: Gradient(colors: [Color.init(red: 215/255, green: 221/255, blue: 232/255), Color.init(red: 117/255, green: 127/255, blue: 154/255)]), startPoint: .top, endPoint: .bottom)
                 ).onChange(of: pickedImage, perform: { newValue in
+                    print("change")
                     guard let pickedPhoto = pickedImage else {
                         showEditPhotoView = false
                         return
@@ -39,9 +61,12 @@ struct ContentView: View {
                     editPhotoViewModel.setInputPhoto(photo: pickedPhoto)
                     showEditPhotoView = true
                 })
-                .sheet(isPresented: $showSheetWithPicker) {
-                    PhotoPicker(image: $pickedImage)
-                }
+                    .sheet(isPresented: $showSheetWithPicker) {
+                        PhotoPicker(image: $pickedImage)
+                    }
+                    .sheet(isPresented: $showCameraPicker) {
+                        CameraPicker(image: $pickedImage)
+                    }
             }
         }
     }
@@ -64,10 +89,9 @@ struct ContentView: View {
     }
     
     struct PickPhotoView: View {
-        @Binding var showSheetWithPicker: Bool
         @State private var isAnimated = false
         @State private var dashPhase = 0.0
-                
+        
         var body: some View {
             VStack {
                 ZStack {
@@ -97,9 +121,6 @@ struct ContentView: View {
                         dashPhase -= 20
                     }
                 }
-            }
-            .onTapGesture {
-                showSheetWithPicker = true
             }
         }
     }
