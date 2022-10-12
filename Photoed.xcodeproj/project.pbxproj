@@ -15,7 +15,6 @@
 		C3DDB86228E0A55800B64C27 /* PhotoedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB86128E0A55800B64C27 /* PhotoedApp.swift */; };
 		C3DDB86428E0A55800B64C27 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB86328E0A55800B64C27 /* ContentView.swift */; };
 		C3DDB86628E0A55B00B64C27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3DDB86528E0A55B00B64C27 /* Assets.xcassets */; };
-		C3DDB86928E0A55B00B64C27 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3DDB86828E0A55B00B64C27 /* Preview Assets.xcassets */; };
 		C3DDB87128E0BF9600B64C27 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB87028E0BF9600B64C27 /* PhotoPicker.swift */; };
 		C3DDB87528E22BE600B64C27 /* EditPhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DDB87428E22BE600B64C27 /* EditPhotoDetailView.swift */; };
 /* End PBXBuildFile section */
@@ -29,7 +28,6 @@
 		C3DDB86128E0A55800B64C27 /* PhotoedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoedApp.swift; sourceTree = "<group>"; };
 		C3DDB86328E0A55800B64C27 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C3DDB86528E0A55B00B64C27 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C3DDB86828E0A55B00B64C27 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C3DDB87028E0BF9600B64C27 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		C3DDB87428E22BE600B64C27 /* EditPhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,11 +57,18 @@
 			isa = PBXGroup;
 			children = (
 				C3CCCFB928EACD7100561D92 /* PhotoSaver.swift */,
-				C3DDB87028E0BF9600B64C27 /* PhotoPicker.swift */,
 				C3135F4D28F1CC2D004358C9 /* ImageCropper.swift */,
-				C3A07A0528F5E7DE00550EC6 /* CameraPicker.swift */,
 			);
 			path = PhotoUtils;
+			sourceTree = "<group>";
+		};
+		C3A07A0728F7384A00550EC6 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				C3A07A0528F5E7DE00550EC6 /* CameraPicker.swift */,
+				C3DDB87028E0BF9600B64C27 /* PhotoPicker.swift */,
+			);
+			path = Pickers;
 			sourceTree = "<group>";
 		};
 		C3DDB85528E0A55800B64C27 = {
@@ -89,18 +94,10 @@
 				C3CCCFBB28EAD9B300561D92 /* PhotoViewModel.swift */,
 				C3135F4F28F4A092004358C9 /* Views */,
 				C3135F5228F4A121004358C9 /* PhotoUtils */,
+				C3A07A0728F7384A00550EC6 /* Pickers */,
 				C3DDB86528E0A55B00B64C27 /* Assets.xcassets */,
-				C3DDB86728E0A55B00B64C27 /* Preview Content */,
 			);
 			path = Photoed;
-			sourceTree = "<group>";
-		};
-		C3DDB86728E0A55B00B64C27 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C3DDB86828E0A55B00B64C27 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,7 +164,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3DDB86928E0A55B00B64C27 /* Preview Assets.xcassets in Resources */,
 				C3DDB86628E0A55B00B64C27 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,7 +312,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Photoed/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = TFF9P2QP4C;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -347,7 +343,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Photoed/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = TFF9P2QP4C;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
