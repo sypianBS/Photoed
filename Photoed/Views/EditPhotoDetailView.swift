@@ -12,6 +12,7 @@ struct EditPhotoDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var editPhotoViewModel: PhotoViewModel
     @State private var showFilterChoiceDialog = false
+    @State private var showImprovementDialog = false
     @State private var showImageCropper = false
     @State private var cropShapeType: Mantis.CropShapeType = .rect
     @State private var presetFixedRatioType: Mantis.PresetFixedRatioType = .canUseMultiplePresetFixedRatio()
@@ -28,7 +29,11 @@ struct EditPhotoDetailView: View {
             }
         }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
             dialogViewOptionsView
-        }.navigationBarBackButtonHidden(true)
+        }.confirmationDialog("Choose improvement", isPresented: $showImprovementDialog) {
+            improvementDialogOptionsView
+        }
+        
+        .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     closeBarButtonView.padding(.trailing, 16)
@@ -105,12 +110,11 @@ struct EditPhotoDetailView: View {
                     self.showFilterChoiceDialog = true
                 }).buttonStyle(EditPhotoButtonStyle())
                 Button("Improve", action: {
-                    //todo show tools for the saturation, contrast, sharpness etc
+                    self.showImprovementDialog = true
                 }).buttonStyle(EditPhotoButtonStyle())
                 Button("Crop", action: {
                     showImageCropper.toggle()
-                })
-                    .buttonStyle(EditPhotoButtonStyle())
+                }).buttonStyle(EditPhotoButtonStyle())
             }
         )
     }
@@ -126,6 +130,21 @@ struct EditPhotoDetailView: View {
                     editPhotoViewModel.applyProcessing()
                 }
                 //cancel button is already provided by default
+            }
+        )
+    }
+    
+    var improvementDialogOptionsView: AnyView {
+        return AnyView (
+            VStack {
+                Button("Saturation") {
+                    
+                }
+                Button("Contrast") {
+                }
+                Button("Brightness") {
+                }
+                
             }
         )
     }
