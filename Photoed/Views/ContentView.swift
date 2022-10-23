@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var showEditPhotoView = false
     @State private var pickedImage: UIImage?
     @State private var showSourceChoiceDialog = false
+    @State private var showCameraNotAvailableAlert = false
     @EnvironmentObject var editPhotoViewModel: PhotoViewModel
     
     var body: some View {
@@ -27,10 +28,14 @@ struct ContentView: View {
                         .onTapGesture {
                             showSourceChoiceDialog = true
                         }
+                        
                     
                     bottomTextView.frame(height: geo.size.height*1/3)
                     
                     editPhotoViewNavigationLink
+                }
+                .alert(isPresented: $showCameraNotAvailableAlert) {
+                    Alert(title: Text("Camera not available"), message: Text("Please connect an appropriate physical device"), dismissButton: .default(Text("OK")))
                 }
                 .confirmationDialog("Choose source", isPresented: $showSourceChoiceDialog) {
                     VStack {
@@ -39,11 +44,17 @@ struct ContentView: View {
                         } label: {
                             Text("Library")
                         }
-                        
+
                         Button {
-                            showCameraPicker = true
+                            //prevent crash if someone chooses Camera on the Simulator
+                            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                showCameraPicker = true
+                            } else {
+                                showCameraNotAvailableAlert = true
+                            }
                         } label: {
                             Text("Camera")
+
                         }
                     }
                 }
