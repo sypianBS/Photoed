@@ -101,10 +101,11 @@ struct EditPhotoDetailView: View {
     var editPhotoFooterView: AnyView {
         return AnyView (
             HStack(spacing: 32) {
-                Button("Theme", action: {})
-                    .buttonStyle(EditPhotoButtonStyle())
-                Button("Filter", action: {
+                Button("Themes", action: {
                     self.showFilterChoiceDialog = true
+                }).buttonStyle(EditPhotoButtonStyle())
+                Button("Improve", action: {
+                    //todo show tools for the saturation, contrast, sharpness etc
                 }).buttonStyle(EditPhotoButtonStyle())
                 Button("Crop", action: {
                     showImageCropper.toggle()
