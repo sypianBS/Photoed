@@ -26,7 +26,8 @@ class PhotoViewModel: ObservableObject {
         var processedImage: UIImage!
         var contentMode: ContentMode = .fit
         var currentFilter: CIFilter
-        var filterIntensity = 1.0
+        var filterIntensity = 2.0
+        var isEditingColors = false
     }
     
     func restoreImageChanges() {
@@ -45,8 +46,33 @@ class PhotoViewModel: ObservableObject {
     func setFilterType(filterType: CIFilter) {
         self.state.currentFilter = filterType
     }
+    
+    func restoreFilterIntensity() {
+        self.state.isEditingColors = false
+        self.state.filterIntensity = 0.5
+    }
+    
+    func applyColorProcessing() {
+        self.state.currentFilter = CIFilter(name: "CIColorControls")!
+        
+        let beginImage = CIImage(image: self.state.inputImage) //one sets values relative to the input image
+        self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+        
+        let inputKeys = self.state.currentFilter.inputKeys
+        
+        //To calculate saturation, this filter linearly interpolates between a grayscale image (saturation = 0.0) and the original image (saturation = 1.0). The filter supports extrapolation: For values large than 1.0, it increases saturation
+        if inputKeys.contains(kCIInputSaturationKey) { self.state.currentFilter.setValue(self.state.filterIntensity, forKey: kCIInputSaturationKey) }
+        
+        guard let outputImage = self.state.currentFilter.outputImage else { return }
+
+        if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+            let uiImage = UIImage(cgImage: cgimg)
+            self.state.processedImage = uiImage
+        }
+    }
 
     func applyProcessing() {
+        
         let beginImage = CIImage(image: self.state.processedImage)
         self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         

@@ -24,8 +24,7 @@ struct EditPhotoDetailView: View {
                 .ignoresSafeArea()
             VStack {
                 photoView
-                editPhotoFooterView
-                    .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
+                editPhotoViewModel.state.isEditingColors ? intensitySliderView.frame(maxWidth: 250, minHeight: 80, maxHeight: 100) : editPhotoFooterView.frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
             }
         }.confirmationDialog("Choose filter", isPresented: $showFilterChoiceDialog) {
             dialogViewOptionsView
@@ -36,12 +35,15 @@ struct EditPhotoDetailView: View {
         .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                    closeBarButtonView.padding(.trailing, 16)
-                    
-                    undoChangesButtonView
+                    if editPhotoViewModel.state.isEditingColors {
+                        discardColorChangeView
+                    } else {
+                        closeBarButtonView.padding(.trailing, 16)
+                        undoChangesButtonView
+                    }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    saveBarButtonView
+                    editPhotoViewModel.state.isEditingColors ? acceptColorChangeView : saveBarButtonView
                 }
             }.fullScreenCover(isPresented: $showImageCropper) {
                 ImageCropper(image: $editPhotoViewModel.state.processedImage, cropShapeType: $cropShapeType, presetFixedRatioType: $presetFixedRatioType)
@@ -88,6 +90,36 @@ struct EditPhotoDetailView: View {
         )
     }
     
+    var acceptColorChangeView: AnyView {
+        return AnyView(
+            Button(action: {
+//                if let processedImage = editPhotoViewModel.state.processedImage {
+//                    PhotoSaver().writeToPhotoAlbum(image: processedImage)
+//                    self.presentationMode.wrappedValue.dismiss()
+//                }
+                editPhotoViewModel.restoreFilterIntensity()
+            }, label: {
+                Text("Apply")
+                    .foregroundColor(.white)
+            })
+        )
+    }
+    
+    var discardColorChangeView: AnyView {
+        return AnyView(
+            Button(action: {
+//                if let processedImage = editPhotoViewModel.state.processedImage {
+//                    PhotoSaver().writeToPhotoAlbum(image: processedImage)
+//                    self.presentationMode.wrappedValue.dismiss()
+//                }
+                editPhotoViewModel.restoreFilterIntensity()
+            }, label: {
+                Text("Discard")
+                    .foregroundColor(.white)
+            })
+        )
+    }
+    
     var photoView: AnyView {
         return AnyView(
             Image(uiImage: self.editPhotoViewModel.state.processedImage)
@@ -119,6 +151,16 @@ struct EditPhotoDetailView: View {
         )
     }
     
+    var intensitySliderView: AnyView {
+        return AnyView (
+            Slider(value: $editPhotoViewModel.state.filterIntensity, in: 0...2)
+                .onChange(of: editPhotoViewModel.state.filterIntensity) { _ in
+                    print(editPhotoViewModel.state.filterIntensity.description)
+                    editPhotoViewModel.applyColorProcessing()
+                }
+        )
+    }
+    
     var dialogViewOptionsView: AnyView {
         return AnyView (
             VStack {
@@ -138,7 +180,7 @@ struct EditPhotoDetailView: View {
         return AnyView (
             VStack {
                 Button("Saturation") {
-                    
+                    editPhotoViewModel.state.isEditingColors = true
                 }
                 Button("Contrast") {
                 }
