@@ -153,7 +153,7 @@ struct EditPhotoDetailView: View {
     
     var intensitySliderView: AnyView {
         return AnyView (
-            Slider(value: $editPhotoViewModel.state.filterIntensity, in: 0...2)
+            Slider(value: $editPhotoViewModel.state.filterIntensity, in: editPhotoViewModel.rangeForCurentFilter)
                 .onChange(of: editPhotoViewModel.state.filterIntensity) { _ in
                     print(editPhotoViewModel.state.filterIntensity.description)
                     editPhotoViewModel.applyColorProcessing()
@@ -181,6 +181,7 @@ struct EditPhotoDetailView: View {
             VStack {
                 Button("Saturation") {
                     editPhotoViewModel.state.isEditingColors = true
+                    editPhotoViewModel.state.filterType = .saturation
                 }
                 Button("Contrast") {
                 }

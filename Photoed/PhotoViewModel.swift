@@ -26,8 +26,9 @@ class PhotoViewModel: ObservableObject {
         var processedImage: UIImage!
         var contentMode: ContentMode = .fit
         var currentFilter: CIFilter
-        var filterIntensity = 2.0
+        var filterIntensity = 1.0
         var isEditingColors = false
+        var filterType: FilterType = .saturation
     }
     
     func restoreImageChanges() {
@@ -45,6 +46,13 @@ class PhotoViewModel: ObservableObject {
     
     func setFilterType(filterType: CIFilter) {
         self.state.currentFilter = filterType
+    }
+    
+    var rangeForCurentFilter: ClosedRange<Double> {
+        switch state.filterType {
+        case .saturation:
+            return FilterSaturation.saturationRange
+        }
     }
     
     func restoreFilterIntensity() {
