@@ -9,4 +9,6 @@ import Foundation
 
 enum FilterType {
     case saturation
+    case contrast
+    case brightness
 }

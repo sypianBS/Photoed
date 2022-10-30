@@ -48,16 +48,41 @@ class PhotoViewModel: ObservableObject {
         self.state.currentFilter = filterType
     }
     
-    var rangeForCurentFilter: ClosedRange<Double> {
+    func setInitialCorrectionParameters(filterType: FilterType) {
+        self.state.isEditingColors = true
+        self.state.filterType = filterType
+        self.state.filterIntensity = initialFilterIntensityValue
+    }
+    
+    var rangeForCurrentFilter: ClosedRange<Double> {
         switch state.filterType {
         case .saturation:
-            return FilterSaturation.saturationRange
+            return FilterRange.saturationRange
+        case .contrast:
+            return FilterRange.contrastRange //todoben contrast is not quite right
+        case .brightness:
+            return FilterRange.brightnessRange
         }
+    }
+    
+    var initialFilterIntensityValue: Double {
+        switch state.filterType {
+        case .saturation:
+            return getMiddleValueForClosedRange(closedRange: FilterRange.saturationRange)
+        case .contrast:
+            return getMiddleValueForClosedRange(closedRange: FilterRange.contrastRange)
+        case .brightness:
+            return getMiddleValueForClosedRange(closedRange: FilterRange.brightnessRange)
+        }
+    }
+    
+    private func getMiddleValueForClosedRange(closedRange: ClosedRange<Double>) -> Double {
+        return (closedRange.lowerBound + closedRange.upperBound) / 2
     }
     
     func restoreFilterIntensity() {
         self.state.isEditingColors = false
-        self.state.filterIntensity = 0.5
+        self.state.filterIntensity = initialFilterIntensityValue
     }
     
     func applyColorProcessing() {
@@ -68,8 +93,21 @@ class PhotoViewModel: ObservableObject {
         
         let inputKeys = self.state.currentFilter.inputKeys
         
-        //To calculate saturation, this filter linearly interpolates between a grayscale image (saturation = 0.0) and the original image (saturation = 1.0). The filter supports extrapolation: For values large than 1.0, it increases saturation
-        if inputKeys.contains(kCIInputSaturationKey) { self.state.currentFilter.setValue(self.state.filterIntensity, forKey: kCIInputSaturationKey) }
+        switch state.filterType {
+        case .saturation:
+            //To calculate saturation, this filter linearly interpolates between a grayscale image (saturation = 0.0) and the original image (saturation = 1.0). The filter supports extrapolation: For values large than 1.0, it increases saturation
+            if inputKeys.contains(kCIInputSaturationKey) {
+                self.state.currentFilter.setValue(self.state.filterIntensity, forKey: kCIInputSaturationKey)
+            }
+        case .contrast:
+            if inputKeys.contains(kCIInputContrastKey) {
+                self.state.currentFilter.setValue(self.state.filterIntensity, forKey: kCIInputContrastKey)
+            }
+        case .brightness:
+            if inputKeys.contains(kCIInputBrightnessKey) {
+                self.state.currentFilter.setValue(self.state.filterIntensity, forKey: kCIInputBrightnessKey)
+            }
+        }
         
         guard let outputImage = self.state.currentFilter.outputImage else { return }
 
