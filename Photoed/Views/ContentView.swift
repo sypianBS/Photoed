@@ -21,7 +21,7 @@ struct ContentView: View {
             //used to divide the screen into 3 equal spaces
             GeometryReader { geo in
                 VStack {
-                    logoView.frame(height: geo.size.height*1/3)
+                    logoView
                     
                     PickPhotoView()
                         .frame(height: geo.size.height*1/3)
@@ -92,10 +92,16 @@ struct ContentView: View {
     
     var logoView: AnyView {
         return AnyView(
-            Text("Photoed")
-                .font(.largeTitle)
-                .bold()
-                .foregroundColor(.indigo)
+            ZStack {
+                Image("photoedHeaderPic") //CC licensed image; source: https://upload.wikimedia.org/wikipedia/commons/4/4f/GND_filter_difference.jpg 
+                    .resizable()
+                    .ignoresSafeArea()
+                Text("Photoed")
+                    .font(.system(size: 36, weight: .thin, design: .monospaced)) //todoben change font
+                    .rotationEffect(Angle(degrees: -3))
+                    .foregroundColor(Color.init(red: 242/255, green: 221/255, blue: 28/255))
+                    .offset(y: 30)
+            }
         )
     }
     
@@ -105,24 +111,12 @@ struct ContentView: View {
         
         var body: some View {
             VStack {
-                ZStack {
-                    ZStack {
-                        Image(systemName: "photo.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200)
-                            .foregroundColor(.white)
-                        RoundedRectangle(cornerRadius: 12)
-                            .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [10], dashPhase: dashPhase))
-                            .frame(width: 215, height: 170)
-                    }
-                    Image(systemName: "hand.tap.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 64)
-                        .foregroundColor(.yellow)
-                        .offset(x: 0, y: isAnimated ? 140 : 50)
-                }
+                Image(systemName: "plus.circle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200)
+                    .foregroundColor(.white)
+                    .offset(y: 40)
             }.onAppear {
                 DispatchQueue.main.async { //required to fix the weird behavior of animating the entire layout, see https://stackoverflow.com/questions/64566492/swiftui-broken-explicit-animations-in-navigationview
                     withAnimation(Animation.easeInOut(duration: 1.5).repeatForever()) {
