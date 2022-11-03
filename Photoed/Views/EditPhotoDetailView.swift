@@ -13,6 +13,7 @@ struct EditPhotoDetailView: View {
     @EnvironmentObject var editPhotoViewModel: PhotoViewModel
     @State private var showFilterChoiceDialog = false
     @State private var showImprovementDialog = false
+    @State private var showCropShapeChoiceDialog = false
     @State private var showImageCropper = false
     @State private var cropShapeType: Mantis.CropShapeType = .rect
     @State private var presetFixedRatioType: Mantis.PresetFixedRatioType = .canUseMultiplePresetFixedRatio()
@@ -30,6 +31,8 @@ struct EditPhotoDetailView: View {
             dialogViewOptionsView
         }.confirmationDialog("Choose improvement", isPresented: $showImprovementDialog) {
             improvementDialogOptionsView
+        }.confirmationDialog("Choose improvement", isPresented: $showCropShapeChoiceDialog) {
+            cropShapeChoiceDialogView
         }
         
         .navigationBarBackButtonHidden(true)
@@ -145,7 +148,7 @@ struct EditPhotoDetailView: View {
                     self.showImprovementDialog = true
                 }).buttonStyle(EditPhotoButtonStyle())
                 Button("Crop", action: {
-                    showImageCropper.toggle()
+                    self.showCropShapeChoiceDialog = true
                 }).buttonStyle(EditPhotoButtonStyle())
             }
         )
@@ -187,6 +190,30 @@ struct EditPhotoDetailView: View {
                 }
                 Button("Brightness") {
                     editPhotoViewModel.setInitialCorrectionParameters(filterType: .brightness)
+                }
+                
+            }
+        )
+    }
+    
+    var cropShapeChoiceDialogView: AnyView {
+        return AnyView (
+            VStack {
+                Button("Rectangle") {
+                    cropShapeType = .rect
+                    showImageCropper = true
+                }
+                Button("Square") {
+                    cropShapeType = .square
+                    showImageCropper = true
+                }
+                Button("Circle") {
+                    cropShapeType = .circle()
+                    showImageCropper = true
+                }
+                Button("Heart") {
+                    cropShapeType = .heart()
+                    showImageCropper = true
                 }
                 
             }
