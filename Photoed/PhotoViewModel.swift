@@ -23,6 +23,7 @@ class PhotoViewModel: ObservableObject {
     
     struct PhotoState {
         var inputImage: UIImage!
+        var originImage: UIImage! //used to discard changes
         var processedImage: UIImage!
         var referenceProcessedImage: UIImage!
         var contentMode: ContentMode = .fit
@@ -33,11 +34,12 @@ class PhotoViewModel: ObservableObject {
     }
     
     func restoreImageChanges() {
-        self.state.processedImage = self.state.inputImage
+        self.state.processedImage = self.state.originImage
     }
     
     func setInputPhoto(photo: UIImage) {
         self.state.inputImage = photo
+        self.state.originImage = photo
         self.state.processedImage = photo //initial value equal to the input image
     }
     
