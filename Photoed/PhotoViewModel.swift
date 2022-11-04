@@ -24,6 +24,7 @@ class PhotoViewModel: ObservableObject {
     struct PhotoState {
         var inputImage: UIImage!
         var processedImage: UIImage!
+        var referenceProcessedImage: UIImage!
         var contentMode: ContentMode = .fit
         var currentFilter: CIFilter
         var filterIntensity = 1.0
@@ -49,6 +50,7 @@ class PhotoViewModel: ObservableObject {
     }
     
     func setInitialCorrectionParameters(filterType: FilterType) {
+        self.state.referenceProcessedImage = self.state.processedImage
         self.state.isEditingColors = true
         self.state.filterType = filterType
         self.state.filterIntensity = initialFilterIntensityValue
@@ -88,7 +90,7 @@ class PhotoViewModel: ObservableObject {
     func applyColorProcessing() {
         self.state.currentFilter = CIFilter(name: "CIColorControls")!
         
-        let beginImage = CIImage(image: self.state.inputImage) //one sets values relative to the input image
+        let beginImage = CIImage(image: self.state.referenceProcessedImage)
         self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         
         let inputKeys = self.state.currentFilter.inputKeys
