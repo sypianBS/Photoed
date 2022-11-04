@@ -100,6 +100,7 @@ struct EditPhotoDetailView: View {
 //                    PhotoSaver().writeToPhotoAlbum(image: processedImage)
 //                    self.presentationMode.wrappedValue.dismiss()
 //                }
+                self.editPhotoViewModel.state.inputImage = self.editPhotoViewModel.state.processedImage
                 editPhotoViewModel.restoreFilterIntensity()
             }, label: {
                 Text("Apply")
