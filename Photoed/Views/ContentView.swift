@@ -24,13 +24,13 @@ struct ContentView: View {
                     logoView
                     
                     PickPhotoView()
-                        .frame(height: geo.size.height*1/3)
+                        .frame(height: geo.size.height*1/2)
                         .onTapGesture {
                             showSourceChoiceDialog = true
                         }
                         
                     
-                    bottomTextView.frame(height: geo.size.height*1/3)
+                    bottomTextView.frame(height: geo.size.height*1/6)
                     
                     editPhotoViewNavigationLink
                 }
@@ -93,7 +93,7 @@ struct ContentView: View {
     var logoView: AnyView {
         return AnyView(
             ZStack {
-                Image("photoedHeaderPic") //CC licensed image; source: https://upload.wikimedia.org/wikipedia/commons/4/4f/GND_filter_difference.jpg 
+                Image("photoedHeaderPic") //CC licensed image; source: https://upload.wikimedia.org/wikipedia/commons/4/4f/GND_filter_difference.jpg
                     .resizable()
                     .ignoresSafeArea()
                 Text("Photoed")
@@ -114,9 +114,8 @@ struct ContentView: View {
                 Image(systemName: "plus.circle")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 200)
+                    .frame(width: 190)
                     .foregroundColor(.white)
-                    .offset(y: 40)
             }.onAppear {
                 DispatchQueue.main.async { //required to fix the weird behavior of animating the entire layout, see https://stackoverflow.com/questions/64566492/swiftui-broken-explicit-animations-in-navigationview
                     withAnimation(Animation.easeInOut(duration: 1.5).repeatForever()) {
@@ -133,6 +132,7 @@ struct ContentView: View {
     var bottomTextView: AnyView {
         return AnyView(
             Text("by sypianBS")
+                .bold()
         )
     }
 }
