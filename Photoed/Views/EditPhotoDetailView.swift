@@ -169,11 +169,22 @@ struct EditPhotoDetailView: View {
         return AnyView (
             VStack {
                 Button("Sepia") {
-                    editPhotoViewModel.setFilterType(filterType: .sepiaTone())
-                    editPhotoViewModel.applyProcessing()
+                    editPhotoViewModel.applyProcessing(filterType: .sepiaTone())
                 }
-                Button("Pixellate") { editPhotoViewModel.setFilterType(filterType: .pixellate())
-                    editPhotoViewModel.applyProcessing()
+                Button("Pixellate") {
+                    editPhotoViewModel.applyProcessing(filterType: .pixellate())
+                }
+                Button("Noir") {
+                    editPhotoViewModel.applyProcessing(filterType: .photoEffectNoir())
+                }
+                Button("Tonal") {
+                    editPhotoViewModel.applyProcessing(filterType: .photoEffectTonal())
+                }
+                Button("Mono") {
+                    editPhotoViewModel.applyProcessing(filterType: .photoEffectMono())
+                }
+                Button("Thermal") {
+                    editPhotoViewModel.applyProcessing(filterType: .thermal())
                 }
                 //cancel button is already provided by default
             }

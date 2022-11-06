@@ -47,10 +47,6 @@ class PhotoViewModel: ObservableObject {
         self.state.contentMode = contentMode
     }
     
-    func setFilterType(filterType: CIFilter) {
-        self.state.currentFilter = filterType
-    }
-    
     func setInitialCorrectionParameters(filterType: FilterType) {
         self.state.referenceProcessedImage = self.state.processedImage
         self.state.isEditingColors = true
@@ -121,8 +117,8 @@ class PhotoViewModel: ObservableObject {
         }
     }
 
-    func applyProcessing() {
-        
+    func applyProcessing(filterType: CIFilter) {
+        self.state.currentFilter = filterType
         let beginImage = CIImage(image: self.state.processedImage)
         self.state.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
         
