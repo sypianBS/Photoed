@@ -133,6 +133,7 @@ struct ContentView: View {
         return AnyView(
             Text("by sypianBS")
                 .bold()
+                .foregroundColor(.white)
         )
     }
 }
