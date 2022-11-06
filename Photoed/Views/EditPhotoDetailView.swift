@@ -23,7 +23,7 @@ struct EditPhotoDetailView: View {
         ZStack {
             Color.black
                 .ignoresSafeArea()
-            VStack {
+            VStack(spacing: 0) {
                 photoView
                 editPhotoViewModel.state.isEditingColors ? intensitySliderView.frame(maxWidth: 250, minHeight: 80, maxHeight: 100) : editPhotoFooterView.frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
             }
